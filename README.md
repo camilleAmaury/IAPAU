@@ -8,7 +8,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/camilleAmaury/IAPAU.git">
-    <img src="images/logo.png" alt="Logo" width="1280" height="720">
+    <img src="images/logo.png" alt="LogoUniversite">
   </a>
 
   <h3 align="center">IAPAU data challenge</h3>
@@ -35,7 +35,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Occitan][product-screenshot]]()
+<p align="center">
+  <img src="images/croixoccitane.png" alt="LogoProjet" />
+</p>
 
 ### Built With
 
@@ -74,4 +76,4 @@ See the linkedIn shields in the top of the README.md
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url-1]: https://www.linkedin.com/in/aniss-bentebib-a449a8155/
 [linkedin-url-2]: https://www.linkedin.com/in/camille-amaury-juge/
-[product-screenshot]: images/croixoccitane.png
+[product-screenshot]: 
