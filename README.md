@@ -76,4 +76,3 @@ See the linkedIn shields in the top of the README.md
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url-1]: https://www.linkedin.com/in/aniss-bentebib-a449a8155/
 [linkedin-url-2]: https://www.linkedin.com/in/camille-amaury-juge/
-[product-screenshot]: 
