@@ -1,0 +1,12 @@
+#CardContainer{
+    box-shadow: 0px 24px 24px 0px black;
+    position:relative;
+}
+
+#FlowerContainer{
+    position: absolute;
+}
+
+#GildasContainer{
+    position: absolute;
+}
