@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 
 import Carte from './Carte';
+import Menu from './Menu';
 
 import './Home.css';
 
@@ -40,6 +41,7 @@ export default class Home extends Component {
                 }
             }>
                 <Fragment>
+                    <Menu viewport={this.state.viewport}></Menu>
                     <Carte viewport={this.state.viewport}></Carte>
                 </Fragment>
             </div>

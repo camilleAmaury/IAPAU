@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 
+import InfoBulle from './InfoBulle';
+
 import './Carte.css';
 
 import background from '../../assets/Images/background.png';
@@ -26,13 +28,20 @@ export default class Carte extends Component {
                 left:74,
                 top:785
             },
-            isLoaded:false
+            isLoaded:false,
+            tooltips:[false]
         };
     }
 
     componentDidMount = () => {
         this.setState({
             isLoaded:true
+        }, () => {
+            setTimeout(() => {  
+                this.setState({
+                    tooltips:[true]
+                });
+            }, 2000);
         });
     }
 
@@ -76,7 +85,7 @@ export default class Carte extends Component {
         top_flower *= ratio
         left_flower *= ratio
         
-        return [width_card, height_card, width_gildas, height_gildas, top_gildas, left_gildas, width_flower, height_flower, top_flower, left_flower];
+        return [width_card, height_card, width_gildas, height_gildas, top_gildas, left_gildas, width_flower, height_flower, top_flower, left_flower, ratio];
     }
 
     render() {
@@ -94,6 +103,7 @@ export default class Carte extends Component {
         let height_flower = 0;
         let top_flower = 0;
         let left_flower = 0;
+        let ratio = 0;
 
         if(this.state.isLoaded){
             let vars = this.resize();
@@ -110,6 +120,7 @@ export default class Carte extends Component {
             height_flower = vars[7];
             top_flower = vars[8];
             left_flower = vars[9];
+            ratio = vars[10];
         }
         
         return(
@@ -132,6 +143,8 @@ export default class Carte extends Component {
                             left:`${left_gildas}px`
                         }
                     }></div>
+                    <InfoBulle isGildas={true} ratio={ratio} left={(width_gildas*2/5)+left_gildas} top={top_gildas+(height_gildas*2/5)} 
+                        isVisible={this.state.tooltips[0]}></InfoBulle>
                     <div id={"FlowerContainer"} style={
                         {
                             width:width_flower,
