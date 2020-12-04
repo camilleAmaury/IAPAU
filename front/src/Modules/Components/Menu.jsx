@@ -19,10 +19,10 @@ export default class Menu extends Component {
         return(
             <nav id={"MenuContainer"}>
                 <ul className={"menu"}>
-                    <li><a href={"#!"}>Lemmatiseur</a></li>
-                    <li><a href={"#!"}>Tagueur</a></li>
-                    <li><a href={"#!"}>Mots Clés</a></li>
-                    <li><a href={"#!"}>Mot Suivant</a></li>
+                    <li onClick={() => {this.props.changeMenu(0)}}><a className={this.props.selected === 0 ? "selected" : ""} href={"#!"}>Lemmatiseur</a></li>
+                    <li onClick={() => {this.props.changeMenu(1)}}><a className={this.props.selected === 1 ? "selected" : ""} href={"#!"}>Tagueur</a></li>
+                    <li onClick={() => {this.props.changeMenu(2)}}><a className={this.props.selected === 2 ? "selected" : ""} href={"#!"}>Mots Clés</a></li>
+                    <li onClick={() => {this.props.changeMenu(3)}}><a className={this.props.selected === 3 ? "selected" : ""} href={"#!"}>Mot Suivant</a></li>
                 </ul>
             </nav>
         );

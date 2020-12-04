@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
-//import './InfoBulle.css'; 
+import './InfoBulle.css'; 
 
 import gildaschat from '../../assets/Images/gildaschat.png';
 import userchat from '../../assets/Images/userchat.png';
@@ -13,8 +13,8 @@ export default class InfoBulle extends Component {
                 width:929,
                 height:284,
                 Text:{
-                    top:130,
-                    left:265
+                    top:110,
+                    left:245
                 }
             },
             bulleBoxUser:{
@@ -23,24 +23,29 @@ export default class InfoBulle extends Component {
                 left:173,
                 top:52,
                 Text:{
-                    top:75,
-                    left:90
+                    top:55,
+                    left:70
                 }
             },
             Text:{
-                width:550,
-                height:90
+                width:590,
+                height:130
             }
         };
     }
 
     componentDidMount = () => {
+        
+    }
+    componentDidUpdate = (prevProps) => {
+        if(!this.props.isGildas && document.getElementById("tooltip-textarea") != null) document.getElementById("tooltip-textarea").focus();
     }
 
     resize = () => {
     }
 
     render() {
+        
         let width = (this.props.isGildas ? this.state.bulleBoxGildas.width : this.state.bulleBoxUser.width) * this.props.ratio;
         let height = (this.props.isGildas ? this.state.bulleBoxGildas.height : this.state.bulleBoxUser.height) * this.props.ratio;
         let top = this.props.top + (this.props.isGildas ? 0 : (this.state.bulleBoxUser.top * this.props.ratio));
@@ -52,30 +57,40 @@ export default class InfoBulle extends Component {
         return(
             <div className={"tooltip"} style={
                 {
-                    position:"absolute",
                     backgroundImage:`url(${this.props.isGildas ? gildaschat : userchat})`,
                     width:`${width}px`,
                     height:`${height}px`,
                     top:`${top}px`,
                     left:`${left}px`,
                     backgroundSize:`${width}px ${height}px`,
-                    opacity : this.props.isVisible ? 1 : 0,
-                    transition:`opacity 2s`
+                    opacity : this.props.isVisible ? 1 : 0
                 }
             }>
-                <div className={"tooltip-text"} style={
-                    {
-                        position:"absolute",
-                        width:`${widthText}px`,
-                        height:`${heightText}px`,
-                        top:`${topText}px`,
-                        left:`${leftText}px`,
-                        border:`1px solid black`
-                    }
-                }>
-                    
-                </div>  
+                {this.props.isGildas ? 
+                    <div className={"tooltip-text"} style={
+                        {
+                            width:`${widthText}px`,
+                            height:`${heightText}px`,
+                            top:`${topText}px`,
+                            left:`${leftText}px`
+                        }
+                    }>
+                        {this.props.text}
+                    </div>  
+                :
+                    <Fragment>
+                        <textarea id={"tooltip-textarea"} className={"tooltip-text"} style={
+                            {
+                                width:`${widthText}px`,
+                                height:`${heightText}px`,
+                                top:`${topText}px`,
+                                left:`${leftText}px`
+                            }
+                        }></textarea>
+                    </Fragment>
+                }
             </div>
+    
         );
     }
 }

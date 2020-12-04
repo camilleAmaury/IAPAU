@@ -29,19 +29,12 @@ export default class Carte extends Component {
                 top:785
             },
             isLoaded:false,
-            tooltips:[false]
         };
     }
 
     componentDidMount = () => {
         this.setState({
             isLoaded:true
-        }, () => {
-            setTimeout(() => {  
-                this.setState({
-                    tooltips:[true]
-                });
-            }, 2000);
         });
     }
 
@@ -89,7 +82,6 @@ export default class Carte extends Component {
     }
 
     render() {
-
         // card
         let width_card = 0;
         let height_card = 0;
@@ -142,9 +134,20 @@ export default class Carte extends Component {
                             top:`${top_gildas}px`,
                             left:`${left_gildas}px`
                         }
-                    }></div>
-                    <InfoBulle isGildas={true} ratio={ratio} left={(width_gildas*2/5)+left_gildas} top={top_gildas+(height_gildas*2/5)} 
-                        isVisible={this.state.tooltips[0]}></InfoBulle>
+                    }>
+                        <div id={"GildasHitBox"} style={
+                            {
+                                width:200*ratio,
+                                height:480*ratio,
+                                top:`${45*ratio}px`,
+                                left:`${0}px`,
+                            }
+                        } onClick={() => {this.props.changeToolTip(this.props.selected[2])}}>
+
+                        </div>
+                    </div>
+                    <InfoBulle isGildas={this.props.selected[0]} ratio={ratio} left={(width_gildas*2/5)+left_gildas} top={top_gildas+(height_gildas*2/5)} 
+                        isVisible={this.props.selected[3]} text={this.props.selected[1]}></InfoBulle>
                     <div id={"FlowerContainer"} style={
                         {
                             width:width_flower,
@@ -154,7 +157,8 @@ export default class Carte extends Component {
                             top:`${top_flower}px`,
                             left:`${left_flower}px`
                         }
-                    }></div>
+                    }>
+                    </div>
                 </Fragment>
             </div>
         );

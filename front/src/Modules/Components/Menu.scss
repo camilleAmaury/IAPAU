@@ -39,6 +39,10 @@
     color: #d94f5c;
   }
 
+  a.selected{
+    color: #d94f5c;
+  }
+
   &:not(:last-child) {
     margin-right: 30px;
   }
