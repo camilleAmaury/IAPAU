@@ -20,7 +20,7 @@ export default class Home extends Component {
             },
             iconeEcoBox:{
                 height:50, 
-                width:50,
+                width:150,
                 heightImage:40,
                 widthImage:23
             },
@@ -91,66 +91,86 @@ export default class Home extends Component {
 
     sendRequest = (event) => {
         if(this.state.selectedToolTip === 5){
-            if (event.keyCode === 13) {
-                // Cancel the default action, if needed
-                event.preventDefault();
-                let text = document.getElementById("tooltip-textarea").value;
-                axios.get(`http://185.157.246.51:5000${this.state.url[this.state.selectedMenu]}${text}/${this.state.ecomode ? 1 : 0}`, {
-                    headers: {
-                      'Access-Control-Allow-Origin': '*'
-                    }
-                })
-                .then(request => {
-                    if(request.status === 200){
+            if(this.state.selectedMenu !== 3){
+                if (event.keyCode === 13) {
+                    // Cancel the default action, if needed
+                    event.preventDefault();
+                    let text = document.getElementById("tooltip-textarea").value;
+                    axios.get(`http://185.157.246.51:5000${this.state.url[this.state.selectedMenu]}${text}/${this.state.ecomode ? 1 : 0}`, {
+                        headers: {
+                          'Access-Control-Allow-Origin': '*'
+                        }
+                    })
+                    .then(request => {
+                        if(request.status === 200){
+                            setTimeout(() => {
+                                let temp = [...this.state.stateToolTip];
+                                let old = <Fragment><span style={{fontStyle: "italic"}}>{text}</span><br/><br/></Fragment>;
+                                if(this.state.selectedMenu === 0){
+                                    temp[6][1] = <p>{old} {request.data}</p>;
+                                }
+                                else if(this.state.selectedMenu === 1){
+                                    let s=[];
+                                    for(let i = 0; i < request.data.length; i++){
+                                        s.push(<Fragment key={i}><span className={"word"} title={request.data[i][1]}>{request.data[i][0]}</span>&nbsp;</Fragment>);
+                                    }
+                                    temp[6][1] = <p>{s}</p>;
+                                }
+                                else if(this.state.selectedMenu === 2){
+                                    let s=[];
+                                    for(let i = 0; i < request.data.length; i++){
+                                        s.push(<Fragment key={i}><span style={{fontWeight: "bold"}}>{request.data[i]}</span>,&nbsp;</Fragment>);
+                                    }
+                                    temp[6][1] = <p>{old} {s}</p>;
+                                }
+                                this.setState({
+                                    stateToolTip:temp
+                                });
+                            }, this.state.time_transition_tooltip);
+                        }
+                    })
+                    .catch(error => {
+                        //
+                        console.log(error);
+                    });
+                    // Loading request time
+                    let temp = this.BaseStateToolTip();
+                    temp[6][2] = this.state.selectedMenu+1
+                    this.setState({
+                        stateToolTip:temp
+                    }, () => {
                         setTimeout(() => {
                             let temp = [...this.state.stateToolTip];
-                            let old = <Fragment><span style={{fontStyle: "italic"}}>{text}</span><br/><br/></Fragment>;
-                            if(this.state.selectedMenu === 0){
-                                temp[6][1] = <p>{old} {request.data}</p>;
-                            }
-                            else if(this.state.selectedMenu === 1){
-                                let s=[];
-                                for(let i = 0; i < request.data.length; i++){
-                                    s.push(<Fragment key={i}><span className={"word"} title={request.data[i][1]}>{request.data[i][0]}</span>&nbsp;</Fragment>);
-                                }
-                                temp[6][1] = <p>{s}</p>;
-                            }
-                            else if(this.state.selectedMenu === 2){
-                                let s=[];
-                                for(let i = 0; i < request.data.length; i++){
-                                    s.push(<Fragment key={i}><span style={{fontWeight: "bold"}}>{request.data[i]}</span>,&nbsp;</Fragment>);
-                                }
-                                temp[6][1] = <p>{old} {s}</p>;
-                            }
-                            else{
-                                temp[6][1] = <p>{request.data}</p>
-                            }
+                            temp[6][3] = true
                             this.setState({
-                                stateToolTip:temp
+                                stateToolTip:temp,
+                                selectedToolTip:6
                             });
                         }, this.state.time_transition_tooltip);
-                    }
-                })
-                .catch(error => {
-                    //
-                    console.log(error);
-                });
-                // Loading request time
-                let temp = this.BaseStateToolTip();
-                temp[6][2] = this.state.selectedMenu+1
-                this.setState({
-                    stateToolTip:temp
-                }, () => {
-                    setTimeout(() => {
-                        let temp = [...this.state.stateToolTip];
-                        temp[6][3] = true
-                        this.setState({
-                            stateToolTip:temp,
-                            selectedToolTip:6
-                        });
-                    }, this.state.time_transition_tooltip);
-                });
-                
+                    });
+                    
+                }
+            }else{
+                if (event.keyCode === 9) {
+                    // Cancel the default action, if needed
+                    event.preventDefault();
+                    let text = document.getElementById("tooltip-textarea").value;
+                    axios.get(`http://185.157.246.51:5000${this.state.url[this.state.selectedMenu]}${text}/${this.state.ecomode ? 1 : 0}`, {
+                        headers: {
+                          'Access-Control-Allow-Origin': '*'
+                        }
+                    })
+                    .then(request => {
+                        if(request.status === 200){
+                            document.getElementById("tooltip-textarea").value = text + " " + request.data;
+                        }
+                    })
+                    .catch(error => {
+                        //
+                        console.log(error);
+                    });
+                    
+                }
             }
         }
     }
@@ -213,18 +233,21 @@ export default class Home extends Component {
                             backgroundSize:`${this.state.iconeEcoBox.widthImage}px ${this.state.iconeEcoBox.heightImage}px`,
                             left:`${this.state.viewport.width-this.state.iconeEcoBox.width}px`,
                             top:`${(this.state.viewport.height-this.state.iconeEcoBox.height)/2}px`,
-                            backgroundColor:this.state.ecomode ? (this.state.ecoHover ? `#b75959` : `#688d68`) : (this.state.ecoHover ? `#688d68` : `#b75959`)
+                            backgroundColor:this.state.ecomode ? (this.state.ecoHover ? `#b75959` : `#688d68`) : (this.state.ecoHover ? `#688d68` : `#b75959`),
+                            color:!this.state.ecoHover ? `rgb(236, 236, 236)` : `black`
                         }
                     } onMouseEnter={() => {this.setState({ecoHover:true})}} onMouseLeave={() => {this.setState({ecoHover:false})}}
-                    title={"Activer/Désactiver le mode écologique"} onClick={() => {this.setState({ecomode:!this.state.ecomode, ecoHover:!this.state.ecoHover})}}>
+                    title={"Activer/Désactiver le mode écologique"} onClick={() => {this.setState({ecomode:!this.state.ecomode, ecoHover:false})}}>
                         <div id={"eco-image"} style={
                             {
                                 backgroundImage:`url(${this.state.ecomode ? sapin : sapin2})`,
-                                width:`${this.state.iconeEcoBox.width}px`,
-                                height:`${this.state.iconeEcoBox.height}px`,
+                                marginRight:`10px`,
+                                width:`${this.state.iconeEcoBox.widthImage}px`,
+                                height:`${this.state.iconeEcoBox.heightImage}px`,
                                 backgroundSize:`${this.state.iconeEcoBox.widthImage}px ${this.state.iconeEcoBox.heightImage}px`
                             }
                         }></div>
+                        <div>{this.state.ecomode? "Désactiver" : "Activer"} <br/>Mode éco</div>
                     </div>
                     <Menu viewport={this.state.viewport} selected={this.state.selectedMenu} changeMenu={this.changeMenu}></Menu>
                     <Carte viewport={this.state.viewport} changeToolTip={this.changeToolTip} selected={this.state.stateToolTip[this.state.selectedToolTip]}

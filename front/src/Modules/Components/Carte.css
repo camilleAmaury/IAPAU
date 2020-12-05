@@ -1,5 +1,5 @@
 #CardContainer{
-    box-shadow: 0px 24px 24px 0px black;
+    box-shadow: 0px 24px 24px 0px rgba(0,0,0,0.8);
     position:relative;
 }
 

@@ -1,9 +1,18 @@
 #HomeContainer{
-    background-color: #685160;
+    background: linear-gradient(217deg, rgba(229,197,154,1), rgba(255,0,0,0) 70.71%),
+    linear-gradient(336deg, rgba(223,154,91,1), rgba(0,0,255,0) 70.71%),      
+    linear-gradient(127deg,  rgba(204,186,238,1), rgba(204,186,238,1) 70.71%);
+            
+    //background-color: #685160;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+}
+
+@font-face {
+    font-family: "comfortaa";
+    src: url("../../assets/Fonts/Comfortaa-Regular.ttf") format("truetype"),
 }
 
 #eco-selector{
@@ -12,7 +21,11 @@
     align-items: center;
     justify-content: center;
     border-radius: 10px 0px 0px 10px;
-    box-shadow: 5px 5px 5px 0px black;
+    box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.8);
+    font-family: "comfortaa";
+    font-weight: bold;
+    cursor: pointer;
+    color:rgb(236, 236, 236);
 }
 #eco-image{
     background-position: center;
