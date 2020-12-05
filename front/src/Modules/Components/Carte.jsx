@@ -29,6 +29,7 @@ export default class Carte extends Component {
                 top:785
             },
             isLoaded:false,
+            gildasHover:false
         };
     }
 
@@ -125,6 +126,16 @@ export default class Carte extends Component {
                 }
             }>
                 <Fragment>
+                    <div id={"GildasHover"} style={
+                        {
+                            width:250*ratio,
+                            height:400*ratio,
+                            top:`${top_gildas+105*ratio}px`,
+                            left:`${left_gildas+-25}px`,
+                            backgroundColor:this.state.gildasHover ? "rgba(211,65,65,0.33)" : "rgba(211,65,65,0)",
+                            borderRadius:`${250*ratio}px / ${480*ratio}px`
+                        }
+                    }></div>
                     <div id={"GildasContainer"} style={
                         {
                             width:width_gildas,
@@ -142,12 +153,14 @@ export default class Carte extends Component {
                                 top:`${45*ratio}px`,
                                 left:`${0}px`,
                             }
-                        } onClick={() => {this.props.changeToolTip(this.props.selected[2])}}>
+                        } onClick={() => {this.props.changeToolTip(this.props.selected[2])}} onMouseEnter={() => {this.setState({gildasHover:true})}}
+                        onMouseLeave={() => {this.setState({gildasHover:false})}} title={this.props.selectedToolTip <= 4 || this.props.selectedToolTip === 6 ? 
+                            "Clique sur moi pour poursuivre l'interaction !":"Appuis sur 'entrée' une fois que tu as écrit ton texte !"}>
 
                         </div>
                     </div>
                     <InfoBulle isGildas={this.props.selected[0]} ratio={ratio} left={(width_gildas*2/5)+left_gildas} top={top_gildas+(height_gildas*2/5)} 
-                        isVisible={this.props.selected[3]} text={this.props.selected[1]}></InfoBulle>
+                        isVisible={this.props.selected[3]} text={this.props.selected[1]} sendRequest={this.props.sendRequest}></InfoBulle>
                     <div id={"FlowerContainer"} style={
                         {
                             width:width_flower,

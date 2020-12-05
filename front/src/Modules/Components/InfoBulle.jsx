@@ -45,7 +45,6 @@ export default class InfoBulle extends Component {
     }
 
     render() {
-        
         let width = (this.props.isGildas ? this.state.bulleBoxGildas.width : this.state.bulleBoxUser.width) * this.props.ratio;
         let height = (this.props.isGildas ? this.state.bulleBoxGildas.height : this.state.bulleBoxUser.height) * this.props.ratio;
         let top = this.props.top + (this.props.isGildas ? 0 : (this.state.bulleBoxUser.top * this.props.ratio));
@@ -79,7 +78,7 @@ export default class InfoBulle extends Component {
                     </div>  
                 :
                     <Fragment>
-                        <textarea id={"tooltip-textarea"} className={"tooltip-text"} style={
+                        <textarea id={"tooltip-textarea"} onKeyDown={(event) => {this.props.sendRequest(event)}} className={"tooltip-text"} style={
                             {
                                 width:`${widthText}px`,
                                 height:`${heightText}px`,

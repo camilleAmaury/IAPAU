@@ -3,13 +3,6 @@
     position:relative;
 }
 
-#FlowerContainer{
-    position: absolute;
-}
-
-#GildasContainer{
-    position: absolute;
-}
-#GildasHitBox{
+#FlowerContainer, #GildasContainer, #GildasHitBox, #GildasHover{
     position: absolute;
 }
