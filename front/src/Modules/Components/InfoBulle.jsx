@@ -62,7 +62,8 @@ export default class InfoBulle extends Component {
                     top:`${top}px`,
                     left:`${left}px`,
                     backgroundSize:`${width}px ${height}px`,
-                    opacity : this.props.isVisible ? 1 : 0
+                    opacity : this.props.isVisible ? 1 : 0,
+                    transition:`opacity ${this.props.time_transition_tooltip/1000.0}s`
                 }
             }>
                 {this.props.isGildas ? 

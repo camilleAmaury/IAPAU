@@ -5,7 +5,7 @@ import axios from "axios";
 import Carte from './Carte';
 import Menu from './Menu';
 
-import './Home.css';
+import './Home.scss';
 
 import sapin from '../../assets/Images/sapin.png';
 import sapin2 from '../../assets/Images/sapin2.png';
@@ -33,15 +33,17 @@ export default class Home extends Component {
                 "/outiloc/next_word/"
             ],
             stateToolTip:[
-                [true, <p>Bienvenue sur <span style={{color:"red", fontWeight:"bold"}}>Outilocc</span> ! Je suis <span style={{color:"#f9c759", fontWeight:"bold"}}>Gildàs</span>. Demande moi un service en cliquant sur le menu ou clique sur moi pour commencer la conversation.</p>, 1],[true, <p>lemmatiseur</p>, 5, false],
-                [true, <p>Tagueur</p>, 5, false],
-                [true, <p>Mots Clés</p>, 5, false],
-                [true, <p>Mot Suivant</p>, 5, false],
+                [true, <p>Bienvenue sur <span style={{color:"red", fontWeight:"bold"}}>Outilocc</span> ! Je suis <span style={{color:"#f9c759", fontWeight:"bold"}}>Gildàs</span>. Demandez moi un service en cliquant sur le menu ou cliquez sur moi pour commencer la conversation.</p>, 1],
+                [true, <p>Permettez moi de vous aider à lemmatiser une phrase. C'est à dire remplacer toutes les formes fléchies en leur lemme, <span style={{fontWeight:"bold"}}>en cliquant sur moi</span> !</p>, 5, false],
+                [true, <p>Je peux effectuer une classification, en partie, du langage. <span style={{fontWeight:"bold"}}>Cliquez sur moi</span> et saisissez votre phrase !</p>, 5, false],
+                [true, <p>Je suis capable de trouver les mots les 3 mots les plus importants de votre phrase, <span style={{fontWeight:"bold"}}>cliquez sur moi</span> !</p>, 5, false],
+                [true, <p>Je vois dans le futur ! <span style={{fontWeight:"bold"}}>Cliquez sur moi</span> et je prédirais le prochain mot de votre phrase.</p>, 5, false],
                 [false, "", 6, false],
                 [true, <p>Laisse moi réfléchir un instant ...</p>, 1, false],
             ],
             ecomode:false,
-            ecoHover:true
+            ecoHover:false,
+            time_transition_tooltip:1000
         };
     }
 
@@ -64,11 +66,11 @@ export default class Home extends Component {
 
     BaseStateToolTip = () => {
         return [
-            [true, <p>Bienvenue sur <span style={{color:"red", fontWeight:"bold"}}>Outilocc</span> ! Je suis <span style={{color:"#f9c759", fontWeight:"bold"}}>Gildàs</span>. Demande moi un service en cliquant sur le menu ou clique sur moi pour commencer la conversation.</p>, 1, false],
-            [true, <p>lemmatiseur</p>, 5, false],
-            [true, <p>Tagueur</p>, 5, false],
-            [true, <p>Mots Clés</p>, 5, false],
-            [true, <p>Mot Suivant</p>, 5, false],
+            [true, <p>Bienvenue sur <span style={{color:"red", fontWeight:"bold"}}>Outilocc</span> ! Je suis <span style={{color:"#f9c759", fontWeight:"bold"}}>Gildàs</span>. Demandez moi un service en cliquant sur le menu ou cliquez sur moi pour commencer la conversation.</p>, 1],
+            [true, <p>Permettez moi de vous aider à lemmatiser une phrase. C'est à dire remplacer toutes les formes fléchies en leur lemme, <span style={{fontWeight:"bold"}}>en cliquant sur moi</span> !</p>, 5, false],
+            [true, <p>Je peux effectuer une classification, en partie, du langage. <span style={{fontWeight:"bold"}}>Cliquez sur moi</span> et saisissez votre phrase !</p>, 5, false],
+            [true, <p>Je suis capable de trouver les mots les 3 mots les plus importants de votre phrase, <span style={{fontWeight:"bold"}}>cliquez sur moi</span> !</p>, 5, false],
+            [true, <p>Je vois dans le futur ! <span style={{fontWeight:"bold"}}>Cliquez sur moi</span> et je prédirais le prochain mot de votre phrase.</p>, 5, false],
             [false, "", 6, false],
             [true, <p>Laisse moi réfléchir un instant ...</p>, 1, false],
         ];
@@ -93,7 +95,7 @@ export default class Home extends Component {
                 // Cancel the default action, if needed
                 event.preventDefault();
                 let text = document.getElementById("tooltip-textarea").value;
-               axios.get(`http://185.157.246.51:5000${this.state.url[this.state.selectedMenu]}${text}/${this.state.ecomode ? 1 : 0}`, {
+                axios.get(`http://185.157.246.51:5000${this.state.url[this.state.selectedMenu]}${text}/${this.state.ecomode ? 1 : 0}`, {
                     headers: {
                       'Access-Control-Allow-Origin': '*'
                     }
@@ -102,19 +104,23 @@ export default class Home extends Component {
                     if(request.status === 200){
                         setTimeout(() => {
                             let temp = [...this.state.stateToolTip];
-                            if(this.state.selectedMenu === 1){
-                                let s = "";
+                            let old = <Fragment><span style={{fontStyle: "italic"}}>{text}</span><br/><br/></Fragment>;
+                            if(this.state.selectedMenu === 0){
+                                temp[6][1] = <p>{old} {request.data}</p>;
+                            }
+                            else if(this.state.selectedMenu === 1){
+                                let s=[];
                                 for(let i = 0; i < request.data.length; i++){
-                                    s += request.data[i][1] + " ";
+                                    s.push(<Fragment key={i}><span className={"word"} title={request.data[i][1]}>{request.data[i][0]}</span>&nbsp;</Fragment>);
                                 }
                                 temp[6][1] = <p>{s}</p>;
                             }
                             else if(this.state.selectedMenu === 2){
-                                let s = "";
+                                let s=[];
                                 for(let i = 0; i < request.data.length; i++){
-                                    s += request.data[i] + " ";
+                                    s.push(<Fragment key={i}><span style={{fontWeight: "bold"}}>{request.data[i]}</span>,&nbsp;</Fragment>);
                                 }
-                                temp[6][1] = <p>{s}</p>;
+                                temp[6][1] = <p>{old} {s}</p>;
                             }
                             else{
                                 temp[6][1] = <p>{request.data}</p>
@@ -122,7 +128,7 @@ export default class Home extends Component {
                             this.setState({
                                 stateToolTip:temp
                             });
-                        }, 2000);
+                        }, this.state.time_transition_tooltip);
                     }
                 })
                 .catch(error => {
@@ -142,7 +148,7 @@ export default class Home extends Component {
                             stateToolTip:temp,
                             selectedToolTip:6
                         });
-                    }, 2000);
+                    }, this.state.time_transition_tooltip);
                 });
                 
             }
@@ -166,7 +172,7 @@ export default class Home extends Component {
                             selectedToolTip:id,
                             stateToolTip:temp
                         });
-                    }, 2000);
+                    }, this.state.time_transition_tooltip);
             });
         }
     }
@@ -214,15 +220,15 @@ export default class Home extends Component {
                         <div id={"eco-image"} style={
                             {
                                 backgroundImage:`url(${this.state.ecomode ? sapin : sapin2})`,
-                                width:`${this.state.iconeEcoBox.widthImage}px`,
-                                height:`${this.state.iconeEcoBox.heightImage}px`,
+                                width:`${this.state.iconeEcoBox.width}px`,
+                                height:`${this.state.iconeEcoBox.height}px`,
                                 backgroundSize:`${this.state.iconeEcoBox.widthImage}px ${this.state.iconeEcoBox.heightImage}px`
                             }
                         }></div>
                     </div>
                     <Menu viewport={this.state.viewport} selected={this.state.selectedMenu} changeMenu={this.changeMenu}></Menu>
                     <Carte viewport={this.state.viewport} changeToolTip={this.changeToolTip} selected={this.state.stateToolTip[this.state.selectedToolTip]}
-                        sendRequest={this.sendRequest} selectedToolTip={this.state.selectedToolTip}></Carte>
+                        sendRequest={this.sendRequest} selectedToolTip={this.state.selectedToolTip} time_transition_tooltip={this.state.time_transition_tooltip}></Carte>
                 </Fragment>
             </div>
         );

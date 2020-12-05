@@ -160,7 +160,8 @@ export default class Carte extends Component {
                         </div>
                     </div>
                     <InfoBulle isGildas={this.props.selected[0]} ratio={ratio} left={(width_gildas*2/5)+left_gildas} top={top_gildas+(height_gildas*2/5)} 
-                        isVisible={this.props.selected[3]} text={this.props.selected[1]} sendRequest={this.props.sendRequest}></InfoBulle>
+                        isVisible={this.props.selected[3]} text={this.props.selected[1]} sendRequest={this.props.sendRequest}
+                        time_transition_tooltip={this.props.time_transition_tooltip}></InfoBulle>
                     <div id={"FlowerContainer"} style={
                         {
                             width:width_flower,

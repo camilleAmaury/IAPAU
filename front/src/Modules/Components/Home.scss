@@ -15,5 +15,15 @@
     box-shadow: 5px 5px 5px 0px black;
 }
 #eco-image{
-
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.word{
+    text-decoration:underline;
+    color:#727272;
+    cursor: pointer;
+}
+.word:hover{
+    color:#000000;
+    text-decoration:none;
 }
