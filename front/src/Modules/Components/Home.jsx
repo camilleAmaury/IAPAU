@@ -107,12 +107,16 @@ export default class Home extends Component {
                                 let temp = [...this.state.stateToolTip];
                                 let old = <Fragment><span style={{fontStyle: "italic"}}>{text}</span><br/><br/></Fragment>;
                                 if(this.state.selectedMenu === 0){
-                                    temp[6][1] = <p>{old} {request.data}</p>;
+                                    let s=[];
+                                    for(let i = 0; i < request.data.length; i++){
+                                        s.push(<Fragment key={i}><span className={"word"} title={Math.round(request.data[i][1]*10000)/100 + "% de confiance" }>{request.data[i][0]}</span>&nbsp;</Fragment>);
+                                    }
+                                    temp[6][1] = <p>{old} {s}</p>;
                                 }
                                 else if(this.state.selectedMenu === 1){
                                     let s=[];
                                     for(let i = 0; i < request.data.length; i++){
-                                        s.push(<Fragment key={i}><span className={"word"} title={request.data[i][1]}>{request.data[i][0]}</span>&nbsp;</Fragment>);
+                                        s.push(<Fragment key={i}><span className={"word"} title={request.data[i][1] + " | " + Math.round(request.data[i][2]*10000)/100 + "% de confiance" }>{request.data[i][0]}</span>&nbsp;</Fragment>);
                                     }
                                     temp[6][1] = <p>{s}</p>;
                                 }
